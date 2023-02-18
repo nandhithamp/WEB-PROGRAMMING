@@ -1,0 +1,65 @@
+emp.html
+-------------------------------------
+
+<html>
+<head>
+<title>Registration form</title></head>
+<body >
+<form name="frmemp" method="post" action="emp.php">
+<label for="emp_name">Name:</label>
+<input type="text" name="txtname" id="txtname">
+<br>
+<label for="Date of joinig" >Date of joining:</label>
+<input type="text" name="txtDOJ" id="txtDOJ">
+<br>
+<label for="designation" >Designation:</label>
+<input type="text" name="designation" id="designation">
+<br>
+<input type="submit" name="submit" id="submit" value="submit">
+</form>
+</body>
+</html>
+-----------------------------------------------
+emp.php
+
+
+<?php
+if(isset($_POST))
+{
+$emp_name=$_POST['txtname'];
+$date_of_joining=$_POST['txtDOJ'];
+$designation=$_POST['designation'];
+}
+$con =mysqli_connect('localhost','root','', 'php_sample');
+if(mysqli_connect_error())
+
+{
+echo"Failed to connect ro mysql :" .mysqli_connect_error();
+
+}
+$sql="INSERT INTO emp(emp_name,date_of_joining,designation) VALUES('$emp_name','$date_of_joining','$designation')";
+
+if(!mysqli_query($con,$sql))
+{
+echo("Error code:".mysqli_error($con));
+}
+else
+{
+echo("Record inserted succesfully");
+}
+
+$sql="select * from emp";
+$result=$con->query($sql);
+if($result->num_rows > 0)
+{
+while($row=$result->fetch_assoc()){
+echo "id:".$row["emp_id"]." "."Name:".$row["emp_name"]." "."Date of joining:".$row["date_of_joining"]." "."Designation:".$row["designation"]. "<br>";
+}
+}
+else
+{
+echo "No records found";
+}
+
+mysqli_close($con);
+?>
